@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		<mapper namespace="josd.login.service.UsersService">
+		    <select id="resultUserList" parameterType="String" resultType="Hashmap">        
+		    	SELECT
+		          USER_ID,
+		          USER_PW,
+		          F_NAME,
+		          L_NAME
+		        FROM
+		          JOSD.USERS
+		    </select>
+		    <select id="checkUserAuth" parameterType="String" resultType="Hashmap">
+		    	SELECT
+		          USER_ID,
+		          USER_PW,
+		          F_NAME,
+		          L_NAME
+		        FROM
+		          JOSD.USERS	    		   
+		    	WHERE USER_ID = #{user_id}
+		    	AND USER_PW = #{user_pw}
+		    </select>
+		    <insert id="registerUser">
+		    	INSERT INTO JOSD.USERS (F_NAME, L_NAME, USER_ADDRESS, USER_EMAIL, USER_CONTNUM, USER_ROLE, USER_ID , USER_PW) 
+		    					 VALUES(#{f_name}, #{l_name}, #{user_address}, #{user_email}, #{user_contNum}, 'N', #{user_id} , #{user_pw} )
+		    </insert>
+		    <delete id="deleteUser">
+		    
+		    </delete>
+		</mapper>
