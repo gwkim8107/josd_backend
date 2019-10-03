@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		<mapper namespace="josd.main.service.MainActivityService">
+
+		    <select id="checkChantData" parameterType="String" resultType="int">
+		    	SELECT COUNT(USER_ID) AS COUNT
+		    	FROM JOSD.CHANTING
+		    	WHERE USER_ID = #{user_id}
+		    	AND   REC_DT  = #{rec_dt}
+		    </select>
+		    <insert id="saveChant">
+		    	INSERT INTO JOSD.CHANTING( 
+		    								USER_ID, 
+		    								REC_DT, 
+		    								BF_8AM, 
+		    								POINT_BF_8AM, 
+		    								BTW_8TO6PM,
+		    								POINT_BTW_8TO6PM, 
+		    								AF_6PM,
+		    								POINT_AF_6PM, 
+		    								CHANT_TOTAL, 
+		    								POINT_TOTAL,
+		    								UP_DTIME, 
+		    								USER_ID_1
+		    							  )
+		    					 		  VALUES( 
+		    					 		  		 #{user_id}, 
+		    					 		  		 #{rec_dt}, 
+		    					 		  		 #{bf_8am}, 
+		    					 		  		 #{point_bf_8am}, 
+		    					 		  		 #{btw_8to6pm},
+		    					 		  		 #{point_btw_8to6pm}, 
+		    					 		  		 #{af_6pm},
+		    					 		  		 #{point_af_6pm}, 
+		    					 		  		 #{chant_total}, 
+		    					 		  		 #{point_total},
+		    					 		  		 CONVERT(VARCHAR(10), getdate(), 102), 
+		    					 		  		 #{user_id} 
+		    					 		  		 )
+		    </insert>
+		    
+		    <update id="updtChant">
+		    	UPDATE JOSD.CHANTING
+		    	SET BF_8AM = #{bf_8am},
+		    		POINT_BF_8AM = #{point_bf_8am},
+		    		BTW_8TO6PM = #{btw_8to6pm},
+		    		POINT_BTW_8TO6PM = #{point_btw_8to6pm}, 
+		    		AF_6PM = #{af_6pm},
+		    		POINT_AF_6PM = #{point_af_6pm},
+		    		CHANT_TOTAL = #{chant_total}, 
+		    		POINT_TOTAL = #{point_total},
+		    		UP_ID		= #{user_id},
+		    		UP_DTIME = CONVERT(VARCHAR(10), getdate(), 102)
+		    	WHERE USER_ID = #{user_id}
+		    	AND   REC_DT  = #{rec_dt}
+		    </update>
+
+		    
+		</mapper>
