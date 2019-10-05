@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import josd.main.entity.Chant;
 import josd.main.entity.Reading;
+import josd.main.entity.Service;
 import josd.main.service.MainActivityService;
 
 @RestController
@@ -77,6 +78,7 @@ public class MainActivityContoller {
 	public ResponseEntity<?> saveReading(@RequestBody Reading reading){
 		String user_id = reading.getUser_id();
 		String rec_dt = reading.getRec_dt();
+		String sub_area = reading.getSub_area();
 		
 		int sub_dura = reading.getSub_dura();
 		int sub_point = 0;//
@@ -91,7 +93,7 @@ public class MainActivityContoller {
 		reading.setSub_point(sub_point);
 		
 		// Check the data existence
-		int reading_count = mainService.checkReadData(user_id, rec_dt);
+		int reading_count = mainService.checkReadData(user_id, rec_dt, sub_area);
 		System.out.println("reading_count = "+reading_count);
 		
 		if (reading_count > 0) {
@@ -104,5 +106,41 @@ public class MainActivityContoller {
 		
 		return new ResponseEntity<String>("Success", HttpStatus.ACCEPTED);
 		
+	}
+	
+	@CrossOrigin(origins="*", maxAge=3600)
+	@RequestMapping(path="/service")
+	public ResponseEntity<?> saveService(@RequestBody Service service){
+		// 
+		String user_id = service.getUser_id();
+		String rec_dt = service.getRec_dt();
+		String sev_kind = service.getSev_kind();
+		
+		int sev_dura = service.getSev_dura();
+		int sev_point = 0;//
+		if(sev_dura < 15) {
+			sev_point = -20;
+		}else if(sev_dura >= 15) {
+			sev_point = (int) Math.round( (sev_dura * 18) / 60 );
+		}
+		if(sev_point > 18) {
+			sev_point = 18;
+		}
+		service.setSev_point(sev_point);
+		
+		// Check the data existence
+		int service_count = mainService.checkServiceData(user_id, rec_dt, sev_kind);
+		System.out.println("reading_count = "+service_count);
+		
+		if (service_count > 0) {
+			// Update data
+			mainService.updtService(service);
+		}else if(service_count == 0) {
+			// Insert data
+			mainService.saveService(service);
+		}
+		
+		
+		return new ResponseEntity<String>("Success", HttpStatus.ACCEPTED);
 	}
 }

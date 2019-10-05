@@ -7,6 +7,7 @@
 		    	FROM JOSD.READINGHEARING
 		    	WHERE USER_ID = #{user_id}
 		    	AND   REC_DT  = #{rec_dt}
+		    	AND   SUB_AREA = #{sub_area}
 		    </select>
 		    <insert id="saveReading">
 		    	INSERT INTO JOSD.READINGHEARING( USER_ID, REC_DT, SUB_AREA, SUB_NAME, SUB_DETAIL, SUB_DURA, SUB_POINT, UP_DTIME, UP_ID, USER_ID_1)

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		<mapper namespace="josd.main.service.MainActivityService">
+
+		    <select id="checkServiceData" parameterType="String" resultType="int">
+		    	SELECT COUNT(USER_ID) AS COUNT
+		    	FROM JOSD.SERVICE
+		    	WHERE USER_ID = #{user_id}
+		    	AND   REC_DT  = #{rec_dt}
+		    	AND   SEV_KIND = #{sev_kind}
+		    </select>
+		    <insert id="saveService">
+		    	INSERT INTO JOSD.SERVICE( USER_ID, REC_DT, SEV_KIND, SEV_NAME, SEV_PLACE, SEV_DURA, SEV_POINT, UP_DTIME, UP_ID, USER_ID_1)
+		    					 	VALUES( #{user_id}, #{rec_dt}, #{sev_kind}, #{sev_name}, #{sev_place}, #{sev_dura}, #{sev_point}, CONVERT(VARCHAR(10), getdate(), 102), #{user_id}, #{user_id} )
+		    </insert>
+		    
+		    <update id="updtService">
+		    	UPDATE JOSD.SERVICE
+		    	SET SEV_NAME = #{sev_name}, 
+		    		SEV_DURA = #{sev_dura}, 
+		    		SEV_POINT = #{sev_point}, 
+		    		UP_DTIME = CONVERT(VARCHAR(10), getdate(), 102), 
+		    		UP_ID	 = #{user_id}
+		    	WHERE USER_ID = #{user_id}
+		    	AND   REC_DT  = #{rec_dt}
+		    	AND   SEV_KIND = #{sev_kind}
+		    </update>
+
+		    
+		</mapper>
