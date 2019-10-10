@@ -25,6 +25,56 @@
 		    	AND   REC_DT  = #{rec_dt}
 		    	AND   SUB_AREA = #{sub_area}
 		    </update>
+		    
+		    <insert id="saveChartReading">
+		    	INSERT INTO JOSD.CALCULATION(
+		    							USER_ID,
+		    							REC_DT,
+		    							READING_POINT,
+		    							UP_DTIME,
+		    							UP_ID		
+		    						)
+		    						VALUES(
+		    							#{user_id},
+		    							#{rec_dt},
+		    							#{sub_point},
+		    							CONVERT(VARCHAR(10), getdate(), 102), 
+		    							#{user_id}
+		    						)
+		    </insert>
+		    
+		    <update id="updtChartReading">
+		    	UPDATE JOSD.CALCULATION
+		    	SET READING_POINT = #{sub_point},
+		    		UP_DTIME = CONVERT(VARCHAR(10), getdate(), 102)
+		    	WHERE USER_ID = #{user_id}
+		    	AND   REC_DT  = #{rec_dt} 
+		    </update>
+		    
+		    <insert id="saveChartHearing">
+		    	INSERT INTO JOSD.CALCULATION(
+		    							USER_ID,
+		    							REC_DT,
+		    							HEARING_POINT,
+		    							UP_DTIME,
+		    							UP_ID		
+		    						)
+		    						VALUES(
+		    							#{user_id},
+		    							#{rec_dt},
+		    							#{sub_point},
+		    							CONVERT(VARCHAR(10), getdate(), 102), 
+		    							#{user_id}
+		    						)
+		    </insert>
+		    
+		    <update id="updtChartHearing">
+		    	UPDATE JOSD.CALCULATION
+		    	SET HEARING_POINT = #{sub_point},
+		    		UP_DTIME = CONVERT(VARCHAR(10), getdate(), 102)
+		    	WHERE USER_ID = #{user_id}
+		    	AND   REC_DT  = #{rec_dt} 
+		    </update>
 
 		    
 		</mapper>

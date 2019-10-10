@@ -25,6 +25,55 @@
 		    	AND   REC_DT  = #{rec_dt}
 		    	AND   SEV_KIND = #{sev_kind}
 		    </update>
-
+		    
+			<insert id="saveChartService">
+		    	INSERT INTO JOSD.CALCULATION(
+		    							USER_ID,
+		    							REC_DT,
+		    							SEV_POINT,
+		    							UP_DTIME,
+		    							UP_ID		
+		    						)
+		    						VALUES(
+		    							#{user_id},
+		    							#{rec_dt},
+		    							#{sev_point},
+		    							CONVERT(VARCHAR(10), getdate(), 102), 
+		    							#{user_id}
+		    						)
+		    </insert>
+		    
+		    <update id="updtChartService">
+		    	UPDATE JOSD.CALCULATION
+		    	SET SEV_POINT = #{sev_point},
+		    		UP_DTIME = CONVERT(VARCHAR(10), getdate(), 102)
+		    	WHERE USER_ID = #{user_id}
+		    	AND   REC_DT  = #{rec_dt} 
+		    </update>
+		    
+		    <insert id="saveChartMMService">
+		    	INSERT INTO JOSD.CALCULATION(
+		    							USER_ID,
+		    							REC_DT,
+		    							MSEV_POINT,
+		    							UP_DTIME,
+		    							UP_ID		
+		    						)
+		    						VALUES(
+		    							#{user_id},
+		    							#{rec_dt},
+		    							#{sev_point},
+		    							CONVERT(VARCHAR(10), getdate(), 102), 
+		    							#{user_id}
+		    						)
+		    </insert>
+		    
+		    <update id="updtChartMMService">
+		    	UPDATE JOSD.CALCULATION
+		    	SET MSEV_POINT = #{sev_point},
+		    		UP_DTIME = CONVERT(VARCHAR(10), getdate(), 102)
+		    	WHERE USER_ID = #{user_id}
+		    	AND   REC_DT  = #{rec_dt} 
+		    </update>
 		    
 		</mapper>

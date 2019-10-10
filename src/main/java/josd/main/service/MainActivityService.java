@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import josd.main.entity.Calculation;
 import josd.main.entity.Chant;
 import josd.main.entity.Reading;
 import josd.main.entity.Service;
@@ -36,5 +38,29 @@ public interface MainActivityService {
 	public void updtService(Service service);
 	
 	public int checkServiceData(String user_id, String rec_dt, String sev_kind);
+	
+	//********************************************
+	// Point store process for charts
+	//********************************************
+	public void saveChartChant(Chant chant);
+	public void updtChartChant(Chant chant);
+	
+	public void saveChartReading(Reading reading);
+	public void updtChartReading(Reading reading);
+	
+	public void saveChartHearing(Reading reading);
+	public void updtChartHearing(Reading reading);
+	
+	public void saveChartService(Service service);
+	public void updtChartService(Service service);
+	
+	public void saveChartMMService(Service service);
+	public void updtChartMMService(Service service);
+	
+	//********************************************
+	// Retrieve users data for charts
+	//********************************************
+	public int checkChartData(String user_id, String rec_dt);
+	public List<Map<String, Object>> getChantingChart(String user_id);
 	
 }

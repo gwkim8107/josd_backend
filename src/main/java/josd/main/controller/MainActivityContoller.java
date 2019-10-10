@@ -1,5 +1,9 @@
 package josd.main.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import josd.main.entity.Calculation;
 import josd.main.entity.Chant;
 import josd.main.entity.Reading;
 import josd.main.entity.Service;
@@ -64,10 +70,22 @@ public class MainActivityContoller {
 		
 		if (chant_count > 0) {
 			// Update data
-			mainService.updtChant(chant);
+				mainService.updtChant(chant);
+				
+				
 		}else if(chant_count == 0) {
 			// Insert data
-			mainService.saveChant(chant);
+				mainService.saveChant(chant);
+				
+		}
+		
+		// Insert chart data
+		int chart_count = mainService.checkChartData(user_id, rec_dt);
+		
+		if (chart_count > 0) {
+			mainService.updtChartChant(chant);
+		}else if(chart_count == 0) {
+			mainService.saveChartChant(chant);
 		}
 		
 		return new ResponseEntity<String>("Success", HttpStatus.ACCEPTED);
@@ -94,14 +112,34 @@ public class MainActivityContoller {
 		
 		// Check the data existence
 		int reading_count = mainService.checkReadData(user_id, rec_dt, sub_area);
-		System.out.println("reading_count = "+reading_count);
+//		System.out.println("reading_count = "+reading_count);
 		
 		if (reading_count > 0) {
 			// Update data
 			mainService.updtReading(reading);
+			
+			
 		}else if(reading_count == 0) {
 			// Insert data
 			mainService.saveReading(reading);
+			
+		}
+		
+		// Insert chart data
+		int chart_count = mainService.checkChartData(user_id, rec_dt);
+		
+		if (chart_count > 0) {
+			if(sub_area.equals("R")) {
+				mainService.updtChartReading(reading);
+			}else if(sub_area.equals("L")) {
+				mainService.updtChartHearing(reading);
+			}
+		}else if(chart_count == 0) {
+			if(sub_area.equals("R")) {
+				mainService.saveChartReading(reading);
+			}else if(sub_area.equals("L")) {
+				mainService.saveChartHearing(reading);
+			}
 		}
 		
 		return new ResponseEntity<String>("Success", HttpStatus.ACCEPTED);
@@ -130,7 +168,7 @@ public class MainActivityContoller {
 		
 		// Check the data existence
 		int service_count = mainService.checkServiceData(user_id, rec_dt, sev_kind);
-		System.out.println("reading_count = "+service_count);
+		System.out.println("service_count = "+service_count);
 		
 		if (service_count > 0) {
 			// Update data
@@ -140,7 +178,41 @@ public class MainActivityContoller {
 			mainService.saveService(service);
 		}
 		
+		// Update data for chart calculation
+		int chart_count = mainService.checkChartData(user_id, rec_dt);
+		
+		if (chart_count > 0) {
+			if(sev_kind.equals("S")) {
+				mainService.updtChartService(service);
+			}else if(sev_kind.equals("M")) {
+				mainService.updtChartMMService(service);
+			}
+		}else if(chart_count == 0) {
+			// Insert data for chart calculation
+			if(sev_kind.equals("S")) {
+				mainService.saveChartService(service);
+			}else if(sev_kind.equals("M")) {
+				mainService.saveChartMMService(service);
+			}
+		}
+			
+		
 		
 		return new ResponseEntity<String>("Success", HttpStatus.ACCEPTED);
 	}
+	
+	@CrossOrigin(origins="*", maxAge=3600)
+	@RequestMapping(path="/chart")
+	public ResponseEntity<?> retrieveChart(@RequestParam("user_id") String user_id){
+//		String user_id = chartCal.getUser_id();
+//		String rec_dt = chartCal.getRec_dt();
+		
+		 List<Map<String, Object>> chartMap = mainService.getChantingChart(user_id);
+		 
+//		 System.out.println("cahrtMap = "+ chartMap.get(0));
+		
+		return new ResponseEntity<>(chartMap, HttpStatus.OK);
+	}
+	
+
 }

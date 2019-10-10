@@ -8,35 +8,36 @@
 		    	WHERE USER_ID = #{user_id}
 		    	AND   REC_DT  = #{rec_dt}
 		    </select>
+		    
 		    <insert id="saveChant">
 		    	INSERT INTO JOSD.CHANTING( 
-		    								USER_ID, 
-		    								REC_DT, 
-		    								BF_8AM, 
-		    								POINT_BF_8AM, 
-		    								BTW_8TO6PM,
-		    								POINT_BTW_8TO6PM, 
-		    								AF_6PM,
-		    								POINT_AF_6PM, 
-		    								CHANT_TOTAL, 
-		    								POINT_TOTAL,
-		    								UP_DTIME, 
-		    								USER_ID_1
-		    							  )
-		    					 		  VALUES( 
-		    					 		  		 #{user_id}, 
-		    					 		  		 #{rec_dt}, 
-		    					 		  		 #{bf_8am}, 
-		    					 		  		 #{point_bf_8am}, 
-		    					 		  		 #{btw_8to6pm},
-		    					 		  		 #{point_btw_8to6pm}, 
-		    					 		  		 #{af_6pm},
-		    					 		  		 #{point_af_6pm}, 
-		    					 		  		 #{chant_total}, 
-		    					 		  		 #{point_total},
-		    					 		  		 CONVERT(VARCHAR(10), getdate(), 102), 
-		    					 		  		 #{user_id} 
-		    					 		  		 )
+ 								USER_ID, 
+ 								REC_DT, 
+ 								BF_8AM, 
+ 								POINT_BF_8AM, 
+ 								BTW_8TO6PM,
+ 								POINT_BTW_8TO6PM, 
+ 								AF_6PM,
+ 								POINT_AF_6PM, 
+ 								CHANT_TOTAL, 
+ 								POINT_TOTAL,
+ 								UP_DTIME, 
+ 								USER_ID_1
+ 							  )
+ 					 		  VALUES( 
+ 					 		  		 #{user_id}, 
+ 					 		  		 #{rec_dt}, 
+ 					 		  		 #{bf_8am}, 
+ 					 		  		 #{point_bf_8am}, 
+ 					 		  		 #{btw_8to6pm},
+ 					 		  		 #{point_btw_8to6pm}, 
+ 					 		  		 #{af_6pm},
+ 					 		  		 #{point_af_6pm}, 
+ 					 		  		 #{chant_total}, 
+ 					 		  		 #{point_total},
+ 					 		  		 CONVERT(VARCHAR(10), getdate(), 102), 
+ 					 		  		 #{user_id} 
+ 					 		  		 )
 		    </insert>
 		    
 		    <update id="updtChant">
@@ -54,6 +55,47 @@
 		    	WHERE USER_ID = #{user_id}
 		    	AND   REC_DT  = #{rec_dt}
 		    </update>
-
+		    
+		    <select id="checkChartData" parameterType="String" resultType="int">
+		    	SELECT COUNT(USER_ID) AS COUNT
+		    	FROM JOSD.CALCULATION
+		    	WHERE USER_ID = #{user_id}
+		    	AND   REC_DT  = #{rec_dt}
+		    </select>
+		    
+		    <insert id="saveChartChant">
+		    	INSERT INTO JOSD.CALCULATION(
+		    							USER_ID,
+		    							REC_DT,
+		    							CHANT_POINT,
+		    							UP_DTIME,
+		    							UP_ID		
+		    						)
+		    						VALUES(
+		    							#{user_id},
+		    							#{rec_dt},
+		    							#{point_total},
+		    							CONVERT(VARCHAR(10), getdate(), 102), 
+		    							#{user_id}
+		    						)
+		    </insert>
+		    
+		    <update id="updtChartChant">
+		    	UPDATE JOSD.CALCULATION
+		    	SET CHANT_POINT = #{point_total},
+		    		UP_DTIME = CONVERT(VARCHAR(10), getdate(), 102)
+		    	WHERE USER_ID = #{user_id}
+		    	AND   REC_DT  = #{rec_dt} 
+		    </update>
+			
+			<select id="getChantingChart" parameterType="String" resultType="Hashmap">
+				SELECT 
+					   CHANT_POINT,
+					   READING_POINT,
+					   SEV_POINT,
+					   MSEV_POINT
+				FROM JOSD.CALCULATION
+				WHERE USER_ID = #{user_id}
+			</select>
 		    
 		</mapper>
