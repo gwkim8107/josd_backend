@@ -114,6 +114,7 @@ public class MainActivityContoller {
 		int reading_count = mainService.checkReadData(user_id, rec_dt, sub_area);
 //		System.out.println("reading_count = "+reading_count);
 		
+		
 		if (reading_count > 0) {
 			// Update data
 			mainService.updtReading(reading);
@@ -122,6 +123,7 @@ public class MainActivityContoller {
 		}else if(reading_count == 0) {
 			// Insert data
 			mainService.saveReading(reading);
+			
 			
 		}
 		
@@ -141,9 +143,9 @@ public class MainActivityContoller {
 				mainService.saveChartHearing(reading);
 			}
 		}
+		List<Map<String, Object>> resultMap = mainService.getUserPoint(user_id, rec_dt);
 		
-		return new ResponseEntity<String>("Success", HttpStatus.ACCEPTED);
-		
+		return new ResponseEntity<>(resultMap, HttpStatus.OK);	
 	}
 	
 	@CrossOrigin(origins="*", maxAge=3600)
@@ -214,5 +216,12 @@ public class MainActivityContoller {
 		return new ResponseEntity<>(chartMap, HttpStatus.OK);
 	}
 	
-
+	@CrossOrigin(origins="*", maxAge=3600)
+	@RequestMapping(path="/point")
+	public ResponseEntity<?> getUserPoint(@RequestParam("user_id") String user_id,@RequestParam("rec_dt") String rec_dt){
+		List<Map<String, Object>> resultMap = mainService.getUserPoint(user_id, rec_dt);
+		
+		return new ResponseEntity<>(resultMap, HttpStatus.OK);
+		
+	}
 }

@@ -63,4 +63,8 @@ public interface MainActivityService {
 	public int checkChartData(String user_id, String rec_dt);
 	public List<Map<String, Object>> getChantingChart(String user_id);
 	
+	//********************************************
+	// Retrieve users data for points
+	//********************************************
+	public List<Map<String, Object>> getUserPoint(String user_id, String rec_dt);
 }

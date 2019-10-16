@@ -90,12 +90,23 @@
 			
 			<select id="getChantingChart" parameterType="String" resultType="Hashmap">
 				SELECT 
-					   CHANT_POINT,
-					   READING_POINT,
-					   SEV_POINT,
-					   MSEV_POINT
+					ISNULL(CHANT_POINT, 0) AS CHANT_POINT,
+					ISNULL(READING_POINT,0) AS READING_POINT,
+					ISNULL(SEV_POINT, 0) AS SEV_POINT,
+					ISNULL(MSEV_POINT, 0) AS MSEV_POINT
 				FROM JOSD.CALCULATION
 				WHERE USER_ID = #{user_id}
+			</select>
+			
+			<select id="getUserPoint" parameterType="String" resultType="Hashmap">
+				SELECT 
+					ISNULL(CHANT_POINT, 0) AS CHANT_POINT,
+					ISNULL(READING_POINT,0) AS READING_POINT,
+					ISNULL(SEV_POINT, 0) AS SEV_POINT,
+					ISNULL(MSEV_POINT, 0) AS MSEV_POINT
+				FROM JOSD.CALCULATION
+				WHERE USER_ID = #{user_id}
+				AND REC_DT = #{rec_dt}
 			</select>
 		    
 		</mapper>
